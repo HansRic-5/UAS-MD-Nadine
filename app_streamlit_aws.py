@@ -1,6 +1,5 @@
 import json
 import os
-
 import boto3
 import streamlit as st
 import plotly.graph_objects as go
@@ -52,9 +51,8 @@ def invoke_endpoint(features):
 with st.sidebar:
     st.title("Credit Score Prediction")
     st.markdown(
-        "This website allows you to predict your credit score"
+        "This website can help you predict your credit score (Poor/Standard/Good)"
     )
-    st.caption(f"Endpoint: {ENDPOINT_NAME}  |  Region: {REGION}")
 
 st.header("Credit Score Prediction")
 
@@ -65,15 +63,15 @@ with tab1:
     with c1:
         age = st.number_input("Age", 0, 110, 30)
         occupation = st.selectbox("Occupation", OCCUPATIONS, index=4)
-        annual_income = st.number_input("Annual Income", 0.0, 1_000_000.0, 50000.0, step=1000.0)
-        monthly_salary = st.number_input("Monthly Inhand Salary", 0.0, 100_000.0, 4000.0, step=100.0)
+        annual_income = st.number_input("Annual Income", min_value=0.0, value=50000.0, step=1000.0)
+        monthly_salary = st.number_input("Monthly Inhand Salary", min_value=0.0, value=4000.0, step=100.0)
         num_bank = st.number_input("Number of Bank Accounts", 0, 50, 4)
     with c2:
         num_card = st.number_input("Number of Credit Cards", 0, 50, 5)
-        outstanding_debt = st.number_input("Outstanding Debt", 0.0, 100_000.0, 1200.0, step=50.0)
-        total_emi = st.number_input("Total EMI per Month", 0.0, 100_000.0, 100.0, step=10.0)
-        amount_invested = st.number_input("Amount Invested Monthly", 0.0, 100_000.0, 200.0, step=10.0)
-        monthly_balance = st.number_input("Monthly Balance", 0.0, 100_000.0, 400.0, step=10.0)
+        outstanding_debt = st.number_input("Outstanding Debt", min_value=0.0, value=1200.0, step=50.0)
+        total_emi = st.number_input("Total EMI per Month", min_value=0.0, value=100.0, step=10.0)
+        amount_invested = st.number_input("Amount Invested Monthly", min_value=0.0, value=200.0, step=10.0)
+        monthly_balance = st.number_input("Monthly Balance", min_value=0.0, value=400.0, step=10.0)
 
 with tab2:
     c1, c2 = st.columns(2)
@@ -82,10 +80,10 @@ with tab2:
         delay_due = st.number_input("Delay from Due Date (days)", -30, 200, 15)
         num_delayed = st.number_input("Number of Delayed Payments", 0, 100, 10)
         credit_history = st.number_input("Credit History Age (months)", 0, 1000, 220)
-        credit_util = st.slider("Credit Utilization Ratio (%)", 0.0, 100.0, 32.0, step=0.5)
+        credit_util = st.slider("Credit Utilization Ratio (%)", 0.0, 100.0, 32.0, step=0.01)
         credit_mix = st.selectbox("Credit Mix", ['Bad', 'Standard', 'Good'], index=1)
     with c2:
-        changed_limit = st.number_input("Changed Credit Limit", -100.0, 1000.0, 10.0, step=1.0)
+        changed_limit = st.number_input("Changed Credit Limit", min_value=-100.0, value=10.0, step=1.0)
         num_inquiries = st.number_input("Number of Credit Inquiries", 0, 100, 5)
         spent_level = st.radio("Spent Level", ['Low', 'High'], horizontal=True)
         payment_value = st.selectbox("Payment Value", ['Small', 'Medium', 'Large'])
